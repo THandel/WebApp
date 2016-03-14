@@ -29,8 +29,8 @@ namespace NewWebApp.Controllers
         private static ODataValidationSettings _validationSettings = new ODataValidationSettings();
         private LinqProvider _newLinqProvider = new LinqProvider();
 
-        // GET: odata/LinqData
-        public IHttpActionResult GetLinqData(ODataQueryOptions<MarketData> queryOptions)
+        // GET: odata/LinqDatas
+        public IHttpActionResult GetLinqDatas(ODataQueryOptions<MarketData> queryOptions)
         {
             // validate the query.
             try
@@ -43,7 +43,7 @@ namespace NewWebApp.Controllers
             }
 
             var sorted = _newLinqProvider.getCombineData();
-            return Ok<System.Collections.IEnumerable>(sorted);
+            return Ok < IEnumerable <CombinedData>> (sorted);
         }
     }
 }

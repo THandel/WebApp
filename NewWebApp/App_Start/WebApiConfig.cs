@@ -14,7 +14,7 @@ namespace NewWebApp
             builder.EntitySet<MarketData>("MarketDatas");
             builder.EntitySet<ReportType>("ReportTypes");
             builder.EntitySet<DeliveryTime>("DeliveryTimes");
-            builder.EntitySet<MarketData>("LinqDatas");
+            builder.EntitySet<CombinedData>("LinqDatas");
             config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
 
             // Web API routes

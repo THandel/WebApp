@@ -181,6 +181,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CombinedData.cs" />
     <Compile Include="Models\DataProvider.cs" />
     <Compile Include="Models\DeliveryTime.cs" />
     <Compile Include="Models\DelTimeProvider.cs" />

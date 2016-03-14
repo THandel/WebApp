@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 
 namespace NewWebApp.Models
@@ -131,21 +132,23 @@ namespace NewWebApp.Models
                 }
             }
         }
-        public System.Collections.IEnumerable getCombineData()
+        public IEnumerable<CombinedData> getCombineData()
         {
             var combineData = from md in _dataList
                               join d in _delTimeList
                               on md.delHr equals d.delHr
                               join r in _repTypeList
                               on md.RptName equals r.RptName
-                              select new
+                              select new CombinedData
                               {
-                                  aggregateMSQ = md.msq,
-                                  smp = md.smp,
-                                  deliveryTime = d.time,
-                                  deliveryDate = md.delDate,
-                                  tradeDate = md.trDate
+                                  AggregateMSQ = md.msq,
+                                  Smp = md.smp,
+                                  DeliveryTime = d.time,
+                                  DeliveryDate = md.delDate,
+                                  TradeDate = md.trDate
                               };
+
+            Debug.WriteLine("I have been called");
             return combineData;
         }
 
