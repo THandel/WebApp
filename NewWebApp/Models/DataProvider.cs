@@ -8,6 +8,8 @@ namespace NewWebApp.Models
 {
     public class DataProvider
     {
+
+        //github test comment
         private string _conString = @"Data Source=lugh4.it.nuigalway.ie;Initial Catalog=msdb2300;Persist Security Info=True;User ID=msdb2300;Password=msdb2300TH";
 
         private List<MarketData> _dataList = new List<MarketData>();
