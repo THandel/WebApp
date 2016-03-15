@@ -28,7 +28,7 @@ namespace NewWebApp.Controllers
                 return BadRequest(ex.Message);
             }
 
-            var sorted = _newDataProvider.getModelasJSON();
+            var sorted = _newDataProvider.getModelas();
             return Ok(sorted);
         }
 

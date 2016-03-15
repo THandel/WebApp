@@ -2,14 +2,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Index page</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="http://code.highcharts.com/highcharts.js"></script>
-    <script src="http://code.highcharts.com/highcharts-more.js"></script>
-    <script src="http://code.highcharts.com/modules/data.js"></script>
-    <script type="text/javascript" src="C:\Users\User\Dropbox\NewWebApp\Highcharts\js"></script>
+    <!-- You have installed the chart on your machine. you can use thiese patchs -->
+    <script src="Scripts/jquery-2.2.1.min.js"></script>
+    <script src="Scripts/highcharts/4.2.0/highcharts.js"></script>
+    <script src="Scripts/highcharts/4.2.0/highcharts-more.js"></script>
+    <!--<script src="Scripts/highcharts/4.2.0/modules/data.js"></script>-->
+    <!--<cscript type="text/javascript" src="C:\Users\User\Dropbox\NewWebApp\Highcharts\js"></cscript>-->
+
+    <style>
+        /* Simple border so you can see the boundaries of the chart*/
+        #container, #container2 {
+            border: 1px solid black;
+        }
+    </style>
 
     <script language="JavaScript">
         $(document).ready(function () {
+
+            //your Setup
+
             var title = {
                 text: 'Daily visits at www.highcharts.com'
             };
@@ -113,17 +124,129 @@
             json.series = series;
             json.plotOptions = plotOptions;
 
-            $.getJSON('localhost:2603/odata/MarketDatas', function (csv) {
+            $.getJSON('http://localhost:2603/odata/MarketDatas', function (dataIncoming) {
+
+                // open your console in the web browser (if using chrome -> right click and inspect. second tab is your console)
+                console.group("Data Incoming");
+                console.debug(dataIncoming);
+                console.groupEnd();
+
+                // pass data to second chart function
+                secondChart(dataIncoming);
+
                 var data = {
-                    csv: csv
+                    csv: dataIncoming.value
                 };
                 json.data = data;
                 $('#container').highcharts(json);
+            }).fail(function (jqxhr, textStatus, error) {
+                var err = textStatus + ", " + error;
+                console.log("Request Failed: " + err);
             });
         });
+
+
+        function secondChart(data) {
+
+            console.group("Data for second chart");
+            console.debug(data.value);
+            console.groupEnd();
+
+            // prepare data
+
+            var preparedData = [];
+
+            for (var i = 0, len = data.value.length; i < len; i++) {
+
+                /* data.value[i] looks like this :
+                {
+                  "RptName": "PUB_D_ExAnteMktSchSummary",
+                  "RptDate": "2016-01-12T00:00:00",
+                  "trDate": "20160113  ",
+                  "num": 1,
+                  "tradeDate": "2016-01-13T00:00:00",
+                  "delDate": "2016-01-14T00:00:00",
+                  "delHr": 1,
+                  "delInt": 1,
+                  "msq": "3957.0700",
+                  "smp": "31.8100",
+                  "currFlag": "E "
+                }
+                */
+
+                //prepare date:
+                // get date from deliveryDate in format yyyy-mm-dd
+                var dateArray = data.value[i].delDate.substring(0, 10).split('-'); // returns string from index 0 and 10 characters : 2016-01-14 and split where is '-'
+
+                var date = Date.UTC(dateArray[0], dateArray[1], dateArray[2], data.value[i].delHr, 0, 0);
+
+                var item = [date, parseFloat(data.value[i].smp)];  // create item consisting from Date and SMP. if you check the data sample above, you can see that the smp is "string". it must be casted to float for the chart
+                preparedData.push(item);
+            }
+
+            console.log(preparedData);
+
+            $('#container2').highcharts({
+
+                chart: {
+                    zoomType: 'x'
+                },
+                title: {
+                    text: 'SMP over time'
+                },
+                subtitle: {
+                    text: document.ontouchstart === undefined ?
+                            'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                },
+                xAxis: {
+                    type: 'datetime'
+                },
+                yAxis: {
+                    title: {
+                        text: 'Exchange rate'
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    area: {
+                        fillColor: {
+                            linearGradient: {
+                                x1: 0,
+                                y1: 0,
+                                x2: 0,
+                                y2: 1
+                            },
+                            stops: [
+                                [0, Highcharts.getOptions().colors[0]],
+                                [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                            ]
+                        },
+                        marker: {
+                            radius: 2
+                        },
+                        lineWidth: 1,
+                        states: {
+                            hover: {
+                                lineWidth: 1
+                            }
+                        },
+                        threshold: null
+                    }
+                },
+
+                series: [{
+                    type: 'area',
+                    name: 'SMP',
+                    data: preparedData // use prepared data
+                }]
+            });
+        }
     </script>
 </head>
 <body>
     <div id="container" style="width:100%; height:400px;"></div>
+    <div id="container2" style="width:100%; height:400px;"></div>
 </body>
 </html>

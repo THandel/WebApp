@@ -79,5 +79,11 @@ namespace NewWebApp.Models
             JavaScriptSerializer json = new JavaScriptSerializer();
             return json.Serialize(_dataList);
         }
+
+        public IEnumerable<MarketData> getModelas()
+        {
+
+            return _dataList;
+        }
     }
  }
