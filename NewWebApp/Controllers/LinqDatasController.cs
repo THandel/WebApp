@@ -5,6 +5,7 @@ using System.Web.Http.OData;
 using System.Web.Http.OData.Query;
 using NewWebApp.Models;
 using Microsoft.Data.OData;
+using System;
 
 namespace NewWebApp.Controllers
 {
@@ -37,6 +38,23 @@ namespace NewWebApp.Controllers
             }
 
             var sorted = _newLinqProvider.getCombineData();
+            return Ok<IEnumerable<combineData>>(sorted);
+        }
+
+        // GET: odata/LinqDatas()
+        public IHttpActionResult GetLinqDatas([FromODataUri] DateTime key, string curr, ODataQueryOptions<MarketData> queryOptions)
+        {
+            // validate the query.
+            try
+            {
+                queryOptions.Validate(_validationSettings);
+            }
+            catch (ODataException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            var sorted = _newLinqProvider.getData(key, curr);
             return Ok<IEnumerable<combineData>>(sorted);
         }
     }

@@ -125,6 +125,7 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Index.html" />
+    <Content Include="MktDataIndex.html" />
     <Content Include="Scripts\highcharts\4.2.0\adapters\standalone-framework.js" />
     <Content Include="Scripts\highcharts\4.2.0\adapters\standalone-framework.src.js" />
     <Content Include="Scripts\highcharts\4.2.0\highcharts-3d.js" />

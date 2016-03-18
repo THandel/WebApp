@@ -17,6 +17,7 @@ namespace NewWebApp.Models
         private string _DeliveryTime;
         private decimal _Aggregate_MSQ;
         private decimal _SMP;
+        private string _curr;
 
         public string tradeDate
         {
@@ -75,6 +76,16 @@ namespace NewWebApp.Models
                 this._SMP = value;
             }
         }
-
+        public string curr
+        {
+            get
+            {
+                return this._curr;
+            }
+            set
+            {
+                this._curr = value;
+            }
+        }
     }
 }

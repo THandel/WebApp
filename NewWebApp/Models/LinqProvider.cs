@@ -141,18 +141,20 @@ namespace NewWebApp.Models
         {
             var combineData = from md in _dataList
                               join d in _delTimeList
-                              on md.delHr equals d.delHr
+                              on new {md.delHr, md.delInt} equals new {d.delHr, d.delInt}
                               join r in _repTypeList
                               on md.RptName equals r.RptName
+                              orderby d.time ascending
                               select new combineData()
                               {
                                   aggregateMSQ = md.msq,
                                   smp = md.smp,
                                   deliveryTime = d.time,
                                   deliveryDate = md.delDate,
-                                  tradeDate = md.trDate
+                                  tradeDate = md.trDate,
+                                  curr = md.currFlag
                               };
-            return combineData;
+            return combineData.ToList();
         }
 
         public IEnumerable<combineData> getData(DateTime dateVal, string curr)
@@ -163,7 +165,7 @@ namespace NewWebApp.Models
                               join r in _repTypeList
                               on md.RptName equals r.RptName
                               where md.trDate.Equals(dateVal)
-                              where md.currFlag.Equals(curr)
+                              where md.currFlag.ToString().Contains(curr)
                               select new combineData
                               {
                                   aggregateMSQ = md.msq,
