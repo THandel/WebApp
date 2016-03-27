@@ -38,11 +38,11 @@ namespace NewWebApp.Controllers
             }
 
             var sorted = _newLinqProvider.getCombineData();
-            return Ok<IEnumerable<combineData>>(sorted);
+            return Ok(sorted);
         }
 
-        // GET: odata/LinqDatas()
-        public IHttpActionResult GetLinqDatas([FromODataUri] DateTime key, string curr, ODataQueryOptions<MarketData> queryOptions)
+       /* // GET: odata/LinqDatas()
+        public IHttpActionResult GetLinqDatas([FromODataUri] string date, string curr, ODataQueryOptions<MarketData> queryOptions)
         {
             // validate the query.
             try
@@ -54,8 +54,8 @@ namespace NewWebApp.Controllers
                 return BadRequest(ex.Message);
             }
 
-            var sorted = _newLinqProvider.getData(key, curr);
+            var sorted = _newLinqProvider.getCData(curr);
             return Ok<IEnumerable<combineData>>(sorted);
-        }
+        }*/
     }
 }

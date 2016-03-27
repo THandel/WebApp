@@ -16,7 +16,7 @@ namespace NewWebApp.Models
         public DataProvider()
         {
             SqlConnection conn = new SqlConnection(_conString);
-            SqlCommand cmd = new SqlCommand("select * from MarketData2", conn);
+            SqlCommand cmd = new SqlCommand("select * from MarketData", conn);
             SqlDataReader rdr = null;
 
             try
@@ -27,17 +27,16 @@ namespace NewWebApp.Models
                 while (rdr.Read())
                 {
                     MarketData m = new MarketData();
-                    m.RptName = (string)rdr["Report_Name"];
-                    m.RptDate = (DateTime)rdr["RPT_Date"];
-                    m.trDate = (string)rdr["Trade_Date"];
-                    m.num = (int)rdr["Num2"];
-                    m.tradeDate = (DateTime)rdr["Trade_Date3"];
-                    m.delDate = (DateTime)rdr["Delivery_Date"];
-                    m.delHr = (int)rdr["Delivery_Hour"];
-                    m.delInt = (int)rdr["Delivery_Interval"];
-                    m.msq = (decimal)rdr["Aggregate_MSQ"];
+                    
+                    m.Num = (int)rdr["num"];
+                    m.tradeDate = (string)rdr["TRADE_DATE"];
+                    m.delDate = (string)rdr["DELIVERY_DATE"];
+                    m.delHr = (int)rdr["DELIVERY_HOUR"];
+                    m.delInt = (int)rdr["DELIVERY_INTERVAL"];
+                    m.runType = (string)rdr["RUN_TYPE"];
+                    m.msq = (decimal)rdr["AGGREGATED_MSQ"];
                     m.smp = (decimal)rdr["SMP"];
-                    m.currFlag = (string)rdr["Currency_Flag"];
+                    m.currFlag = (string)rdr["CURRENCY_FLAG"];
                     _dataList.Add(m);
                 }
 
@@ -56,7 +55,7 @@ namespace NewWebApp.Models
             }
         }
 
-        public IEnumerable<MarketData> getDate(DateTime date)
+        public IEnumerable<MarketData> getDate(string date)
         {
             var sorted = _dataList.Where(x => x.tradeDate == date).OrderBy(x => x.tradeDate);
             return sorted;

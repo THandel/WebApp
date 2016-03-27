@@ -24,7 +24,7 @@ namespace NewWebApp.Models
                 {
                     ReportType r = new ReportType();
                     r.RptName = (string)rdr["Report_Name"];
-                    r.runType = (string)rdr["Run_Type"];
+                    r.runType = (string)rdr["RUN_TYPE"];
                     r.title = (string)rdr["Title"];
                     r.runType4 = (string)rdr["Run_Type4"];
                     _repTypeList.Add(r);

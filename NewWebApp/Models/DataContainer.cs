@@ -13,7 +13,7 @@ namespace NewWebApp.Models
     public class combineData
     {
         private string _Trade_Date;
-        private DateTime _Delivery_Date;
+        private string _Delivery_Date;
         private string _DeliveryTime;
         private decimal _Aggregate_MSQ;
         private decimal _SMP;
@@ -42,7 +42,7 @@ namespace NewWebApp.Models
             }
         }
 
-        public DateTime deliveryDate
+        public string deliveryDate
         {
             get
             {

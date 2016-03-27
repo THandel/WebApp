@@ -123,6 +123,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\XMLDB.mdf" />
+    <Content Include="App_Data\XMLDB_log.ldf">
+      <DependentUpon>XMLDB.mdf</DependentUpon>
+    </Content>
     <Content Include="Global.asax" />
     <Content Include="Index.html" />
     <Content Include="MktDataIndex.html" />
@@ -168,6 +172,7 @@
     <Content Include="Scripts\highcharts\4.2.0\themes\skies.js" />
     <Content Include="Scripts\jquery-2.2.1.js" />
     <Content Include="Scripts\jquery-2.2.1.min.js" />
+    <Content Include="SQL Queries\XMLtoSqlTable.sql" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -203,9 +208,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

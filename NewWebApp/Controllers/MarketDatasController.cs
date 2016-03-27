@@ -50,7 +50,7 @@ namespace NewWebApp.Controllers
         }
 
         // GET: odata/MarketDatas(5)
-        public IHttpActionResult GetMarketData([FromODataUri] DateTime key, ODataQueryOptions<MarketData> queryOptions)
+        public IHttpActionResult GetMarketData([FromODataUri] string key, ODataQueryOptions<MarketData> queryOptions)
         {
             // validate the query.
             try

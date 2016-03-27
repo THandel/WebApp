@@ -21,8 +21,7 @@ namespace NewWebApp.Models
 
         public ReportType() { }
 
-        [Column(IsPrimaryKey = true, Storage = "_Report_Name")]
-        public string RptName
+       public string RptName
         {
             get
             {
@@ -33,6 +32,8 @@ namespace NewWebApp.Models
                 this._Report_Name = value;
             }
         }
+
+         [Column(IsPrimaryKey = true, Storage = "_Run_Type")]
         public string runType
         {
             get
