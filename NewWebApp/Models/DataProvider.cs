@@ -55,34 +55,17 @@ namespace NewWebApp.Models
             }
         }
 
-        public IEnumerable<MarketData> getDate(string date)
-        {
-            var sorted = _dataList.Where(x => x.tradeDate == date).OrderBy(x => x.tradeDate);
-            return sorted;
-        }
-
         public IEnumerable<MarketData> getModel()
         {
             return _dataList;
         }
-
-        public IEnumerable<MarketData> getCombineModel()
+        
+        public IEnumerable<MarketData> getDate(string date)
         {
-
-            return _dataList;
+            string dateVal = date.ToString();
+            var sorted = _dataList.Where(x => x.delDate == dateVal);
+            return sorted;
         }
 
-        public string getModelasJSON()
-        {
-           // List<MarketData> newList = new List<MarketData>();
-            JavaScriptSerializer json = new JavaScriptSerializer();
-            return json.Serialize(_dataList);
-        }
-
-        public IEnumerable<MarketData> getModelas()
-        {
-
-            return _dataList;
-        }
     }
  }

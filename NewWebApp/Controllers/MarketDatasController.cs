@@ -16,7 +16,7 @@ namespace NewWebApp.Controllers
         //private LinqProvider _newLinqProvider = new LinqProvider();
 
         // GET: odata/MarketDatas
-        public IHttpActionResult GetMarketDatas(ODataQueryOptions<MarketData> queryOptions)
+        public IHttpActionResult Get(ODataQueryOptions<MarketData> queryOptions)
         {
             // validate the query.
             try
@@ -28,39 +28,23 @@ namespace NewWebApp.Controllers
                 return BadRequest(ex.Message);
             }
 
-            var sorted = _newDataProvider.getModelas();
+            var sorted = _newDataProvider.getModel();
             return Ok(sorted);
         }
 
-        // GET: odata/MarketDataJSON
-        public IHttpActionResult GetMarketDataJSON(ODataQueryOptions<MarketData> queryOptions)
-        {
-            // validate the query.
-            try
-            {
-                queryOptions.Validate(_validationSettings);
-            }
-            catch (ODataException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-            var sorted = _newDataProvider.getModelasJSON();
-            return Ok(sorted);
-        }
 
         // GET: odata/MarketDatas(5)
-        public IHttpActionResult GetMarketData([FromODataUri] string key, ODataQueryOptions<MarketData> queryOptions)
+        public IHttpActionResult Get([FromODataUri] string key)
         {
             // validate the query.
-            try
+           /* try
             {
                 queryOptions.Validate(_validationSettings);
             }
             catch (ODataException ex)
             {
                 return BadRequest(ex.Message);
-            }
+            }*/
 
             var sortedDate = _newDataProvider.getDate(key);
             return Ok<IEnumerable<MarketData>>(sortedDate);

@@ -2,6 +2,8 @@
 using System.Web.Http.OData.Extensions;
 using NewWebApp.Models;
 using System.Web.Http;
+using System.Data.Metadata.Edm;
+
 
 namespace NewWebApp
 {
@@ -9,6 +11,10 @@ namespace NewWebApp
     {
         public static void Register(HttpConfiguration config)
         {
+
+            // Web API routes
+            config.MapHttpAttributeRoutes();
+
             // Web API configuration and services
             ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
             builder.EntitySet<MarketData>("MarketDatas");
@@ -16,9 +22,6 @@ namespace NewWebApp
             builder.EntitySet<DeliveryTime>("DeliveryTimes");
             builder.EntitySet<combineData>("LinqDatas");
             config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
-
-            // Web API routes
-            config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

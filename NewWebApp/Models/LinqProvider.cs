@@ -175,7 +175,7 @@ namespace NewWebApp.Models
 
         public IEnumerable<combineData> getCombineData()
         {
-            var combineData = from md in _dataList
+           var cData = from md in _dataList
                               join d in _delTimeList
                               on new {md.delHr, md.delInt} equals new {d.delHr, d.delInt}
                               join r in _repTypeList
@@ -191,29 +191,36 @@ namespace NewWebApp.Models
                                   curr = md.currFlag
                               };
 
-            List<combineData> newDataList = combineData.ToList<combineData>();
+            List<combineData> newDataList = cData.ToList<combineData>();
             return newDataList;
         }
 
-        public IEnumerable<combineData> getCData(string curr)
+        //This query works if I hardcode in the date but not if the date string is 
+        // passed in from the URL.
+        //Uncommenting the line "where md.currFlag.Equals(c)" and passing in a single
+        //character works, so I think the issue is with the slashes in the date string.
+
+        public IEnumerable<combineData> getCData(string date)
         {
-            //combineData newCData = new combineData();
-            var combineData = from md in _dataList
-                              join d in _delTimeList
-                              on md.delHr equals d.delHr
-                              join r in _repTypeList
-                              on md.runType equals r.runType
-                              // where md.trDate.Contains(dateVal)
-                              where md.currFlag.ToString().Contains(curr)
-                              select new combineData
-                              {
-                                  aggregateMSQ = md.msq,
-                                  smp = md.smp,
-                                  deliveryTime = d.time,
-                                  deliveryDate = md.delDate,
-                                  tradeDate = md.trDate
-                              };
-            return combineData;
+            var cData = (from md in _dataList
+                         join d in _delTimeList
+                         on new { md.delHr, md.delInt } equals new { d.delHr, d.delInt }
+                         join r in _repTypeList
+                         on md.runType equals r.runType
+                         where md.delDate.Equals(date)
+                        // where md.currFlag.Equals(c)
+                         orderby d.time ascending
+                         select new combineData()
+                         {
+                             aggregateMSQ = md.msq,
+                             smp = md.smp,
+                             deliveryTime = d.time,
+                             deliveryDate = md.delDate,
+                             tradeDate = md.trDate,
+                             curr = md.currFlag
+                         });
+            List<combineData> newDataList = cData.ToList<combineData>();
+            return newDataList;
         }
     }
 }
