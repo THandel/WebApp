@@ -195,32 +195,33 @@ namespace NewWebApp.Models
             return newDataList;
         }
 
-        //This query works if I hardcode in the date but not if the date string is 
-        // passed in from the URL.
-        //Uncommenting the line "where md.currFlag.Equals(c)" and passing in a single
-        //character works, so I think the issue is with the slashes in the date string.
+        /* Since OData does not allow keys to contain slashes, the user must be constrained 
+         * to only entering in dash-separated date values.
+         * The below method first replaces the dashes in the entered value with slashes
+         * to match the format of the date values in the database. */
 
-        public IEnumerable<combineData> getCData(string date)
+        public IEnumerable<combineData> getCData(string dateIn)  //string dateIn will be in the format dd-mm-yyyy
         {
-            var cData = (from md in _dataList
-                         join d in _delTimeList
-                         on new { md.delHr, md.delInt } equals new { d.delHr, d.delInt }
-                         join r in _repTypeList
-                         on md.runType equals r.runType
-                         where md.delDate.Equals(date)
-                        // where md.currFlag.Equals(c)
-                         orderby d.time ascending
-                         select new combineData()
-                         {
-                             aggregateMSQ = md.msq,
-                             smp = md.smp,
-                             deliveryTime = d.time,
-                             deliveryDate = md.delDate,
-                             tradeDate = md.trDate,
-                             curr = md.currFlag
-                         });
-            List<combineData> newDataList = cData.ToList<combineData>();
-            return newDataList;
+            string date = dateIn.Replace('-', '/');             //replace dashes with forward slash
+            
+                var cData = (from md in _dataList
+                             join d in _delTimeList
+                             on new { md.delHr, md.delInt } equals new { d.delHr, d.delInt }
+                             join r in _repTypeList
+                             on md.runType equals r.runType
+                             where md.delDate.Equals(date)
+                             orderby d.time ascending
+                             select new combineData()
+                             {
+                                 aggregateMSQ = md.msq,
+                                 smp = md.smp,
+                                 deliveryTime = d.time,
+                                 deliveryDate = md.delDate,
+                                 tradeDate = md.trDate,
+                                 curr = md.currFlag
+                             });
+                List<combineData> newDataList = cData.ToList<combineData>();
+                return newDataList;
         }
     }
 }

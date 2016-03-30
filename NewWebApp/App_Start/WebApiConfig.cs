@@ -22,7 +22,7 @@ namespace NewWebApp
             builder.EntitySet<DeliveryTime>("DeliveryTimes");
             builder.EntitySet<combineData>("LinqDatas");
             config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
-
+           
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
