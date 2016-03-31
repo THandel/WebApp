@@ -2,67 +2,65 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
-    <script src="Scripts/jquery-2.2.1.min.js"></script>
-    <script src="Scripts/highcharts/4.2.0/highcharts.js"></script>
-    <script src="Scripts/highcharts/4.2.0/highcharts-more.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-    <script src="https://code.highcharts.com/stock/highstock.js"></script>
-    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+
 
     <script language="JavaScript">
+        //This page is to test the date picker funtionality by itself without Highcharts
+        //The date the user entered should persist after form submit
+        function main() {
+            var defaultDate = '2016-03-25';
+            document.forms["inputForm"]["dateSelect"].value = defaultDate;
+            var DateIn = getDateVal();
+            console.log(new Date(DateIn));
 
-        //This is a test page to test different ways of implementing a date selector        
-        //Code from jsfiddle.net/2ah5f4ya/
-        
-        $(function () {
-            
-            $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function (data) {
-                // Create the chart
-                $('#container').highcharts('StockChart', {
+            var getDate = dateInParse(new Date(DateIn));
 
+            defaultDate = dateOutParse(new Date(DateIn));
+            console.log(defaultDate);
+        }
 
-                    rangeSelector : {
-                        selected : 1
-                    },
+        function getDateVal() {
+            console.log("getDateVal function fired");
+            var DateIn = new Date(document.forms["inputForm"]["dateSelect"].value);  //get value in date selector box
+            console.log("input date: " + DateIn);
+            //document.forms["inputForm"]["dateSelect"].value = DateIn;
+           // console.log("date out:" + document.forms["inputForm"]["dateSelect"].value);
+            return DateIn;
+        }
 
-                    title : {
-                        text : 'AAPL Stock Price'
-                    },
-
-                    series : [{
-                        name : 'AAPL',
-                        data : data,
-                        tooltip: {
-                            valueDecimals: 2
-                        }
-                    }]
-
-                }, function (chart) {
-
-                    // apply the date pickers
-                    setTimeout(function () {
-                        $('input.highcharts-range-selector', $(chart.container).parent())
-                        .datepicker();
-                    }, 0);
-                });
-            });
-
-
-            // Set the datepicker's date format
-            $.datepicker.setDefaults({
-                dateFormat: 'yy-mm-dd',
-                onSelect: function () {
-                    this.onchange();
-                    this.onblur();
-                }
-            });
-
-        });
+        function dateInParse(dateInput) {
+            console.log("dateInParse function fired");
+            var s = (dateInput.toString().split('-')); //date in selector is by default in format YYYY-MM-DD
+            // Need to split this into DD-MM-YYYY
+            var getDate = ([s[2], s[1], s[0]].join('-')); //join the split sections of the date back together
+            return new Date(getDate);
+        }
+        function dateOutParse(dateInput) {
+            console.log("dateOutParse function fired");
+            var s = (dateInput.toString().split('-')); //date is in format DD-MM-YYYY
+            // Need to split this into YYYY-MM-DD to pass it back to date selector
+            var outDate = ([s[2], s[1], s[0]].join('-')); //join the split sections of the date back together
+            defaultDate = new Date(outDate);
+            console.log(outDate);
+            return defaultDate;
+        }
         </script>
-        </head>
-        <body>
-            <div id="container" style="height: 400px; min-width: 600px"></div>
-
-
-        </body>
-        </html>
+    </head>
+    <body onload="main()">
+        <div id="chartContainer" style="width:100%; height:400px;"></div>
+    
+        <div id="inputDiv" style="width:100%; height:100px;">
+            <form name='inputForm' method='get'>
+                <fieldset>
+                    <legend> Select a new date </legend>
+                    <hr />
+                    <input id="dateSelect" type="date" value=defaultDate onchange="getDateVal()"/>
+                    <input id="dateSubmit" type="submit" value="Submit" onchange="$('#inputForm').submit();" />
+                    <input id="dateReset" type="reset" value="Reset" />
+                    <hr />
+                </fieldset>
+            </form>
+        </div>
+        
+    </body>
+    </html>

@@ -3,7 +3,7 @@
 <head>
     <title>Index page</title>
 
-    <script src="Scripts/jquery-2.2.1.min.js"></script>
+    <script src="Scripts/jquery-2.2.2.min.js"></script>
     <script src="Scripts/highcharts/4.2.0/highcharts.js"></script>
     <script src="Scripts/highcharts/4.2.0/highcharts-more.js"></script>
 
@@ -15,9 +15,20 @@
     </style>
 
     <script language="JavaScript">
+        var defaultDate = '';
         $(document).ready(function () {
-            //removed existing chart
-            $.getJSON('http://localhost:2603/odata/LinqDatas', function (dataIncoming) {
+            defaultDate = '2016-03-26';
+            console.log(defaultDate);
+            var DateIn = getDateVal();
+            console.log(DateIn);
+            defaultDate = dateOutParse(DateIn);
+            console.log(defaultDate);
+            var getDate = dateInParse(DateIn);
+            console.log(getDate);
+            console.log(getDate); //log date to console for testing
+            var queryStr = "http://localhost:2603/odata/LinqDatas('" + getDate + "')"; //concatenate the query string
+            console.log(queryStr); //log query string to console for verification
+            $.getJSON(queryStr, function (dataIncoming) { //pass query string to getJSON method
                 console.group("Data Incoming");
                 console.debug(dataIncoming);
                 console.groupEnd();
@@ -36,29 +47,14 @@
             console.group("Data for chart");
             console.debug(data.value);
             console.groupEnd();
-            // var preparedData = [];
             var euroData = []; //array to hold data in euro
             var gbpData = []; //array to hold data in pounds
             var msqData = []; //new empty array to hold second series
             for (var i = 0, len = data.value.length; i < len; i++) {
-                /* data.value[i] looks like this :
-
-                aggregateMSQ: ""3715.1800"
-                curr:"E"
-                deliveryDate:"25/03/2016          "
-                deliveryTime:"01:00     "
-                smp:"31.73"
-                tradeDate:"24/03/2016          "
-                */
-                //prepare date:
-                // get date from deliveryDate in format yyyy-mm-dd
-                if (data.value[i].deliveryDate == "26/03/2016") {
-                    //very crude date filtering to check that values are returned correctly
                     var dateArray = data.value[i].deliveryDate.substring(0, 10).split('/'); // returns string from index 0 and 10 characters : 25/03/2016 and split where is '/'
                     var currVal = data.value[i].curr.substring(0, 1); //get the currency flag - returns from Linq as "E"
                     var timeArray = data.value[i].deliveryTime.substring(0, 5).split(':'); //split time into hours and mins
                     var date = Date.UTC(parseInt(dateArray[2]), parseInt(dateArray[1] - 1), parseInt(dateArray[0]), parseInt(timeArray[0]), parseInt(timeArray[1]), 0, 0);
-                    console.log(date);
                     var newDate = new Date(date); //get date as type Date
                     var dateTitle = newDate.toLocaleDateString("en-GB"); //format to dd/mm/yyyy to use in title of chart
                     var msq = data.value[i].aggregateMSQ; //new variable for MSQ data
@@ -71,7 +67,6 @@
                     }
                     var msqItems = [date, parseFloat(msq)]; //create new item containing MSQ vs date
                     msqData.push(msqItems); //add MSQ data items to array
-                }
             }
             console.log(msqData);
             $('#chartContainer').highcharts({
@@ -159,12 +154,48 @@
                 }]
             });
         }
+        
+        function getDateVal() {
+            console.log("getDateVal function fired");
+            var DateIn = document.forms["inputForm"]["dateSelect"].value;  //get value in date selector box
+            console.log("input date: " + DateIn);
+            document.forms["inputForm"]["dateSelect"].value = DateIn;
+            console.log("date out:" + document.forms["inputForm"]["dateSelect"].value);
+            return DateIn;
+        }
+
+        function dateInParse(dateInput) {
+            console.log("dateInParse funtion fired");
+            var s = (dateInput.toString().split('-')); //date in selector is by default in format YYYY-MM-DD
+            // Need to split this into DD-MM-YYYY
+            var getDate = ([s[2], s[1], s[0]].join('-')); //join the split sections of the date back together
+            return getDate;
+        }
+        function dateOutParse(dateInput) {
+            console.log("dateOutParse funtion fired");
+            var s = (dateInput.toString().split('-')); //date in selector is by default in format YYYY-MM-DD
+            // Need to split this into DD-MM-YYYY
+            var outDate = ([s[2], s[1], s[0]].join('-')); //join the split sections of the date back together
+            console.log(outDate);
+            return outDate;
+        }
     </script>
 </head>
 <body>
-    <div id="chartContainer" style="width:100%; height:400px;"></div><hr />
-    <input id="Submit1" type="submit" value="submit" />
-    <input id="dateSelect" type="date" />
-    <input id="Reset1" type="reset" value="reset" /><hr />
+    <div id="chartContainer" style="width:100%; height:400px;"></div>
+    
+    <div id="inputDiv" onload="dateOutParse(defaultDate)" style="width:100%; height:100px;">
+        <form name='inputForm' method='get'>
+            <fieldset>
+                <legend> Select a new date </legend>
+                <hr />
+                <input id="dateSelect" type="date" value=defaultDate onchange="getDateVal()"/>
+                <input id="dateSubmit" type="submit" value="Submit" onchange="$('#inputForm').submit();" />
+                <input id="dateReset" type="reset" value="Reset" />
+                <hr />
+            </fieldset>
+        </form>
+    </div>
+        
 </body>
 </html>
