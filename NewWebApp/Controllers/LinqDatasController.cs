@@ -4,6 +4,8 @@ using System.Web.Http.OData;
 using System.Web.Http.OData.Query;
 using NewWebApp.Models;
 using Microsoft.Data.OData;
+using System.Web.Mvc;
+using NewWebApp.Controllers;
 
 namespace NewWebApp.Controllers
 {
