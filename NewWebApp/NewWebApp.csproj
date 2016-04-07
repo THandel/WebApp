@@ -148,14 +148,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app.js" />
     <Content Include="App_Data\XMLDB.mdf" />
     <Content Include="App_Data\XMLDB_log.ldf">
       <DependentUpon>XMLDB.mdf</DependentUpon>
     </Content>
     <Content Include="Global.asax" />
     <Content Include="Index.html" />
-    <Content Include="MktDataIndex.html" />
-    <Content Include="newtest.html" />
+    <Content Include="Reporting.html" />
     <Content Include="Scripts\highcharts\4.2.0\adapters\standalone-framework.js" />
     <Content Include="Scripts\highcharts\4.2.0\adapters\standalone-framework.src.js" />
     <Content Include="Scripts\highcharts\4.2.0\highcharts-3d.js" />
@@ -200,7 +200,7 @@
     <Content Include="Scripts\jquery-2.2.2.js" />
     <Content Include="Scripts\jquery-2.2.2.min.js" />
     <Content Include="SQL Queries\XMLtoSqlTable.sql" />
-    <Content Include="TestPage.html" />
+    <Content Include="styleSheet.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

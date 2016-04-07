@@ -6,21 +6,48 @@
     <script src="Scripts/jquery-2.2.2.min.js"></script>
     <script src="Scripts/highcharts/4.2.0/highcharts.js"></script>
     <script src="Scripts/highcharts/4.2.0/highcharts-more.js"></script>
-    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href="/styleSheet.css" rel="stylesheet" type="text/css" />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
     <style>
-        /* Simple border so you can see the boundaries of the chart*/
-        #chartContainer {
-            border: 1px solid black;
+        
+        #wrapper {
+            width: 100%;
+            overflow: hidden;
+            height: 450px;
         }
+
+        #chartContainer {
+            width: 70%;
+            float: left;
+            padding:10px;
+            border: 1px solid black;
+            height: 400px;
+        }
+
+        #inputDiv {
+            width: 20%;
+            float:right;
+            overflow: hidden;
+        }    
     </style>
 
     <script language="JavaScript">
+        var data;
         $(document).ready(function () {
             var DateInput = "26/03/2016";
             var chart1;
+            $("#btnPrint").live("click", function () {
+                var contents = $("#printContents").html();
+                var printWindow = window.open('', '', 'height=400,width=800');
+                printWindow.document.write('<html><head>');
+                printWindow.document.write('</head><body >');
+                printWindow.document.write(contents);
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.print();
+            });
                     $('#datepick').datepicker({
                         dateFormat: "dd/mm/yy",
                         minDate: new Date(2016, 3 - 1, 24),
@@ -37,6 +64,7 @@
                                 console.debug(dataIncoming);
                                 console.groupEnd();
                                 secondChart(dataIncoming);
+                                drawTbl(dataIncoming);
                                 var data = {
                                     csv: dataIncoming.value
                                 };
@@ -49,8 +77,31 @@
                         }
                     });
         });
+        function drawTbl(data) {
+            var tr, td;
+            var tbody = document.getElementById("rptBody"); //get table body from html
+            tbody.innerHTML = ""; //clear any existing data from table
+            for (var i = 0, len = data.value.length; i < len; i++) {
+                //iterate through the incoming data
+                tr = tbody.insertRow(tbody.rows.length);
+                //insert a row
+                td = tr.insertCell(tr.cells.length);
+                //insert cell
+                td.setAttribute("align", "center");
+                //set alignment
+                td.innerHTML = data.value[i].deliveryTime;
+                //put data point into cell
+                td = tr.insertCell(tr.cells.length);
+                td.innerHTML = data.value[i].aggregateMSQ;
+                td = tr.insertCell(tr.cells.length);
+                td.innerHTML = data.value[i].smp;
+                td = tr.insertCell(tr.cells.length);
+                td.innerHTML = data.value[i].curr;
+                //td = tr.insertCell(tr.cells.length);
+            }
+        }
 
-        function secondChart(data) {
+         function secondChart(data) {
             console.group("Data for chart");
             console.debug(data.value);
             console.groupEnd();
@@ -78,107 +129,132 @@
             console.log(msqData);
 
             chart1 = new Highcharts.Chart({
-                    chart: {
-                        zoomType: 'x',
-                        alignTicks: false,
-                        renderTo: 'chartContainer'
-                    },
+                chart: {
+                    zoomType: 'x',
+                    alignTicks: false,
+                    renderTo: 'chartContainer'
+                },
+                title: {
+                    text: 'Market Data over time for ' + dateTitle //date included in title
+                },
+                subtitle: {
+                    text: document.ontouchstart === undefined ?
+                            'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                },
+                xAxis: {
+                    type: 'datetime',
+                    tickInterval: 1800000 //ticks every 30mins
+                },
+                yAxis: [{ //primary y-axis for euro data
                     title: {
-                        text: 'Market Data over time for ' + dateTitle //date included in title
+                        text: ''
                     },
-                    subtitle: {
-                        text: document.ontouchstart === undefined ?
-                                'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                }, { //second y-axis for SMP £ data
+                    title: {
+                        text: ''
                     },
-                    xAxis: {
-                        type: 'datetime',
-                        tickInterval: 1800000 //ticks every 30mins
+                }, {
+                    title: { //third y-axis for MSQ data
+                        text: 'Aggregate MSQ',
                     },
-                    yAxis: [{ //primary y-axis for euro data
-                        title: {
-                            text: ''
-                        },
-                    }, { //second y-axis for SMP £ data
-                        title: {
-                            text: ''
-                        },
-                    }, {
-                        title: { //third y-axis for MSQ data
-                            text: 'Aggregate MSQ',
-                        },
-                        labels: {
-                            format: '{value} MWh',  //not sure of units for MSQ - will check
-                            opposite: true
-                        },
-                        opposite: true, //third y-axis should be opposite primary y-axis
-                    }],
-                    tooltip: {
-                        shared: true //shared tooltip so that user can read all three values for a data point at the same time
+                    labels: {
+                        format: '{value} MWh',  //not sure of units for MSQ - will check
+                        opposite: true
                     },
-                    legend: {
-                        enabled: true //enable legend to allow user to switch between the three data series
-                    },
-                    plotOptions: {
-                        area: {
-                            fillColor: {
-                                linearGradient: {
-                                    x1: 0,
-                                    y1: 0,
-                                    x2: 0,
-                                    y2: 1
-                                },
-                                stops: [
-                                    [0, '#1190FF'],
-                                    [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                                ]
+                    opposite: true, //third y-axis should be opposite primary y-axis
+                }],
+                tooltip: {
+                    shared: true //shared tooltip so that user can read all three values for a data point at the same time
+                },
+                legend: {
+                    enabled: true //enable legend to allow user to switch between the three data series
+                },
+                plotOptions: {
+                    area: {
+                        fillColor: {
+                            linearGradient: {
+                                x1: 0,
+                                y1: 0,
+                                x2: 0,
+                                y2: 1
                             },
-                            marker: {
-                                radius: 2
-                            },
-                            lineWidth: 1,
-                            states: {
-                                hover: {
-                                    lineWidth: 1
-                                }
-                            },
-                            threshold: null
-                        }
-                    },
-                    series: [{
-                        type: 'area', //first series - SMP in euro
-                        name: 'SMP - Euro',
-                        color: '#20647F',
-                        data: euroData // use euro data
-                    }, {
-                        type: 'area', //second series - SMP in £
-                        name: 'SMP - Pounds',
-                        color: '#00BDCC',
-                        data: gbpData // use pounds data
-                    }, {
-                        type: 'area', //third series - MSQ
-                        name: 'Aggregate MSQ',
-                        color: '#4B467F',
-                        yAxis: 1,
-                        data: msqData //third series uses MSQData
-                    }]
-                });
-            
-        };
-      
-       
+                            stops: [
+                                [0, '#AEAEB0'],
+                                [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                            ]
+                        },
+                        marker: {
+                            radius: 2
+                        },
+                        lineWidth: 1,
+                        states: {
+                            hover: {
+                                lineWidth: 1
+                            }
+                        },
+                        threshold: null
+                    }
+                },
+                series: [{
+                    type: 'area', //first series - SMP in euro
+                    name: 'SMP - Euro',
+                    color: '#20647F',
+                    data: euroData // use euro data
+                }, {
+                    type: 'area', //second series - SMP in £
+                    name: 'SMP - Pounds',
+                    color: '#5A5F7F',
+                    data: gbpData // use pounds data
+                }, {
+                    type: 'area', //third series - MSQ
+                    name: 'Aggregate MSQ',
+                    color: '#4B467F',
+                    yAxis: 1,
+                    data: msqData //third series uses MSQData
+                }]
+            });
+        };      
+    </script>
+    <script>
+        function hideData() {
+            document.getElementById("reportData").style.display = "none";
+        }
+
+        function showData() {
+            document.getElementById("reportData").style.display = "block";
+        }
     </script>
 </head>
-<body>
-    <div id="chartContainer" style="width:100%; height:400px;"></div>
-    
-    <div id="inputDiv" style="width:30%; height:100px;">
-            <fieldset>
-                <legend> Select a new date </legend>
-                <hr />
-                Date: <input type="text" id="datepick" size="30" /> 
-                <hr />
-            </fieldset>
-    </div>
+<body style="background: #F2F2F5; ">
+    <form id="printContents" style="padding:50px;">
+        <p class="h">Placeholder Header<br></p>
+        <div id="wrapper" style="padding:50px;">
+            <div id="chartContainer" style="background-color: #F9FAFC;"></div>
+
+            <div class="inputDiv" style="padding:50px;">
+                <div class="dropdown-content">
+                    <hr />
+                    <p class="small">Date: <input type="text" id="datepick" size="30" /> </p>
+                    <hr />
+                </div>
+            </div>
+            <br />
+            <input type="button" value="Print Report" id="btnPrint" />
+            <input type="button" value="Show Data" id="showBtn" onclick="showData()"/>
+            <input type="button" value="Hide Data" id="hideBtn" onclick="hideData()"/>
+        </div>
         
+        <table id="reportData" cellpadding="10" cellspacing="5" style="width:75%; display:none; float:right;">
+            <thead style="text-align:left;">
+                <tr>
+                    <th>Delivery Time</th>
+                    <th>Aggregate MSQ</th>
+                    <th>SMP</th>
+                    <th>Currency</th>
+                </tr>
+            </thead>
+            <tbody id="rptBody"></tbody>
+        </table>
+        </form>
 </body>
 </html>

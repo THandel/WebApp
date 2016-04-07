@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="Scripts/jquery-2.2.2.min.js"></script>
+    <script src="Scripts/highcharts/4.2.0/highcharts.js"></script>
+    <script src="Scripts/highcharts/4.2.0/highcharts-more.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+    <script language="JavaScript">
+       
+            function getData(DateInput) {
+                var queryStr = "http://localhost:2603/odata/LinqDatas?$filter=(deliveryDate eq '" + DateInput + "')";
+                console.log(queryStr);
+
+                $.getJSON(queryStr, function (dataIncoming) { //pass query string to getJSON method
+                    console.group("Data Incoming");
+                    console.debug(dataIncoming);
+                    console.groupEnd();
+                    drawTbl(dataIncoming);
+                    var data = {
+                        csv: dataIncoming.value
+                    };
+                    JSON.data = data;
+
+                }).fail(function (jqxhr, textStatus, error) {
+                    var err = textStatus + ", " + error;
+                    console.log("Request Failed: " + err);
+                })              
+            }
+            function drawTbl(data) {
+                var tr, td;
+                var tbody = document.getElementById("rptBody");
+                // loop through data source
+                for (var i = 0, len = data.value.length; i < len; i++) {
+                    tr = tbody.insertRow(tbody.rows.length);
+                    td = tr.insertCell(tr.cells.length);
+                    td.setAttribute("align", "center");
+                    td.innerHTML = data.value[i].deliveryTime;
+                    td = tr.insertCell(tr.cells.length);
+                    td.innerHTML = data.value[i].aggregateMSQ;
+                    td = tr.insertCell(tr.cells.length);
+                    td.innerHTML = data.value[i].smp;
+                    td = tr.insertCell(tr.cells.length);
+                    td.innerHTML = data.value[i].curr;
+                    td = tr.insertCell(tr.cells.length);
+                }
+            }
+        
+    </script>
+</head>
+<body>
+    <input type="button" id="drawTbl" onclick="getData('26/03/2016')" />
+    <table id="reportData" style="width:75%;">
+        <thead style="text-align:left;">
+            <tr>
+                <th>Delivery Time</th>
+                <th>Aggregate MSQ</th>
+                <th>SMP</th>
+                <th>Currency</th>
+            </tr>
+        </thead>
+        <tbody id="rptBody"></tbody>
+    </table>   
+</body>
+</html>
