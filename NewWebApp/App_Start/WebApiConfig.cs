@@ -18,7 +18,6 @@ namespace NewWebApp
             // Web API configuration and services
             ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
             builder.EntitySet<MarketData>("MarketDatas");
-            builder.EntitySet<ReportType>("ReportTypes");
             builder.EntitySet<DeliveryTime>("DeliveryTimes");
             builder.EntitySet<combineData>("LinqDatas");
             config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());

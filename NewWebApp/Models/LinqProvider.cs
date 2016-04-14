@@ -12,14 +12,12 @@ namespace NewWebApp.Models
 
         private string _conString = @"Data Source=lugh4.it.nuigalway.ie;Initial Catalog=msdb2300;Persist Security Info=True;User ID=msdb2300;Password=msdb2300TH";
         private List<DeliveryTime> _delTimeList = new List<DeliveryTime>();
-        private List<ReportType> _repTypeList = new List<ReportType>();
         private List<MarketData> _dataList = new List<MarketData>();
         private List<combineData> _cDataList = new List<combineData>();
 
         public LinqProvider()
         {
             DelTimeProvider();
-            RepTypeProvider();
             DataProvider();
             //newCombineData();
         }
@@ -61,41 +59,8 @@ namespace NewWebApp.Models
             }
         }
 
-        public void RepTypeProvider()
-        {
-            SqlConnection conn = new SqlConnection(_conString);
-            SqlCommand cmd = new SqlCommand("select * from ReportType", conn);
-            SqlDataReader rdr = null;
-
-            try
-            {
-                conn.Open();
-                rdr = cmd.ExecuteReader();
-
-                while (rdr.Read())
-                {
-                    ReportType r = new ReportType();
-                    r.RptName = (string)rdr["Report_Name"];
-                    r.runType = (string)rdr["RUN_TYPE"];
-                    r.title = (string)rdr["Title"];
-                    r.runType4 = (string)rdr["Run_Type4"];
-                    _repTypeList.Add(r);
-                }
-            }
-
-            finally
-            {
-                if (rdr != null)
-                {
-                    rdr.Close();
-                }
-                if (conn != null)
-                {
-                    conn.Close();
-                }
-            }
-        }
-
+       
+         
         public void DelTimeProvider()
         {
             SqlConnection conn = new SqlConnection(_conString);
@@ -178,8 +143,6 @@ namespace NewWebApp.Models
            var cData = from md in _dataList
                               join d in _delTimeList
                               on new {md.delHr, md.delInt} equals new {d.delHr, d.delInt}
-                              join r in _repTypeList
-                              on md.runType equals r.runType
                               orderby d.time ascending
                               select new combineData()
                               {
@@ -207,8 +170,6 @@ namespace NewWebApp.Models
                 var cData = (from md in _dataList
                              join d in _delTimeList
                              on new { md.delHr, md.delInt } equals new { d.delHr, d.delInt }
-                             join r in _repTypeList
-                             on md.runType equals r.runType
                              where md.delDate.Equals(date)
                              orderby d.time ascending
                              select new combineData()

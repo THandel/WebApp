@@ -6,76 +6,123 @@
     <script src="Scripts/jquery-2.2.2.min.js"></script>
     <script src="Scripts/highcharts/4.2.0/highcharts.js"></script>
     <script src="Scripts/highcharts/4.2.0/highcharts-more.js"></script>
-    <link href="/styleSheet.css" rel="stylesheet" type="text/css" />
+    <link href="styleSheet.css" rel="stylesheet" type="text/css" />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
     <style>
-        
+        input.control {
+            display: inline;
+            padding: 10px 15px 10px 10px;
+            list-style-type: none;
+            text-decoration: none;
+            border: none;
+            background-color: #404040;
+            font-family: Tahoma,Verdana,sans serif;
+            color: #ffffff;
+            font-variant: small-caps;
+            font-size: 1em;
+            margin-left: 0px;
+            -webkit-transition-duration: 0.4s; /* Safari */
+            transition-duration: 0.4s;
+        }
+
+
+            input.control:hover {
+                background-color: #747475;
+                color: #ffffff;
+            }
+
         #wrapper {
-            width: 100%;
+            width: 70%;
             overflow: hidden;
             height: 450px;
+            display: inline;
         }
 
         #chartContainer {
             width: 70%;
             float: left;
-            padding:10px;
-            border: 1px solid black;
+            padding: 10px;
+            margin-right: 20px;
+            border-style: 1px solid;
+            border-color: #747475;
             height: 400px;
+            display: inline-block;
         }
 
-        #inputDiv {
-            width: 20%;
-            float:right;
-            overflow: hidden;
-        }    
+        div.inputDiv {
+            display: inline;
+            padding: 10px 15px 10px 10px;
+            list-style-type: none;
+            text-decoration: none;
+            background-color: #404040;
+            font-family: Tahoma,Verdana,sans serif;
+            color: #ffffff;
+            font-variant: small-caps;
+            font-size: 1em;
+            margin-left: 0px;
+            -webkit-transition-duration: 0.4s;
+            transition-duration: 0.4s;
+            z-index: 9999 !important; /*set popup datepicker z-position - otherwise the chart will cover it*/
+        }
+
+            div.inputDiv:hover {
+                background-color: #747475;
+                color: #ffffff;
+            }
+
+        dl {
+            display: block;
+            margin-top: 1em;
+            margin-bottom: 1em;
+            margin-left: 0;
+            margin-right: 0;
+        }
+        p.error {
+            font-family: "Arial Narrow",Verdana,sans serif;
+            color: #7F1817;
+            font-variant: small-caps;
+            font-weight: 200;
+            font-size: 2.5em;
+        }
+        p.errorSmall {
+            font-family: "Arial Narrow",Verdana,sans serif;
+            color: #7F1817;
+            font-variant: small-caps;
+            font-weight: 200;
+            font-size: 1.75em;
+        }
     </style>
 
     <script language="JavaScript">
         var data;
         $(document).ready(function () {
-            var DateInput = "26/03/2016";
             var chart1;
-            $("#btnPrint").live("click", function () {
-                var contents = $("#printContents").html();
-                var printWindow = window.open('', '', 'height=400,width=800');
-                printWindow.document.write('<html><head>');
-                printWindow.document.write('</head><body >');
-                printWindow.document.write(contents);
-                printWindow.document.write('</body></html>');
-                printWindow.document.close();
-                printWindow.print();
-            });
-                    $('#datepick').datepicker({
-                        dateFormat: "dd/mm/yy",
-                        minDate: new Date(2016, 3 - 1, 24),
-                        maxDate: new Date(2016, 3 - 1, 29),
-                        onSelect: function () {
-                            DateInput = $("#datepick").datepicker({ dateFormat: 'dd/MM/yyyy' }).val();
-                            console.log(DateInput);
+          
+            $('#datepick').datepicker({
+                showAnim: 'slideDown', //set open animation for datepicker
+                dateFormat: "dd/mm/yy", //set date format
+                minDate: new Date(2016, 3 - 1, 24), //constrain selectable dates to those for which there is data
+                maxDate: new Date(2016, 3 - 1, 29),
+                onSelect: function () {
+                    DateInput = $("#datepick").datepicker({ dateFormat: 'dd/MM/yyyy' }).val(); //get selected date 
 
-                            var queryStr = "http://localhost:2603/odata/LinqDatas?$filter=(deliveryDate eq '" + DateInput + "')";
-                            console.log(queryStr);
-                            
-                            $.getJSON(queryStr, function (dataIncoming) { //pass query string to getJSON method
-                                console.group("Data Incoming");
-                                console.debug(dataIncoming);
-                                console.groupEnd();
-                                secondChart(dataIncoming);
-                                drawTbl(dataIncoming);
-                                var data = {
-                                    csv: dataIncoming.value
-                                };
-                                JSON.data = data;
-       
-                            }).fail(function (jqxhr, textStatus, error) {
-                                var err = textStatus + ", " + error;
-                                console.log("Request Failed: " + err);
-                            });
-                        }
+                    var queryStr = "http://lugh4.it.nuigalway.ie/THIndustryProject/odata/LinqDatas?$filter=(deliveryDate eq '" + DateInput + "')";
+                    //create query string
+                    $.getJSON(queryStr, function (dataIncoming) { //pass query string to getJSON method
+                        secondChart(dataIncoming); //draw chart
+                        drawTbl(dataIncoming); //draw data table
+                        var data = {
+                            csv: dataIncoming.value
+                        };
+                        JSON.data = data;
+                    }).fail(function (jqxhr, textStatus, error) {
+                        var err = textStatus + ", " + error;
+                        console.log("Request Failed: " + err);
                     });
+                }
+            });
         });
         function drawTbl(data) {
             var tr, td;
@@ -94,17 +141,25 @@
                 td = tr.insertCell(tr.cells.length);
                 td.innerHTML = data.value[i].aggregateMSQ;
                 td = tr.insertCell(tr.cells.length);
-                td.innerHTML = data.value[i].smp;
+                var strCurr = [data.value[i].smp.substring(0, 2), data.value[i].smp.substring(3, 5)];
+                //split the currency string - parsing it to float rounds the number in a way unsuitable for a currency value
+                var joinStr = strCurr.join(".");
+                //join strings back together
+                td.innerHTML = joinStr;
+                //print the joined string into the table
                 td = tr.insertCell(tr.cells.length);
-                td.innerHTML = data.value[i].curr;
-                //td = tr.insertCell(tr.cells.length);
+                if (data.value[i].curr == "E") {
+                    td.innerHTML = "€";
+                    //replace E with € for aesthetic purposes + clarity
+                }
+                else {
+                    td.innerHTML = "£";
+                    //replace P with £ for aesthetic purposes + clarity 
+                }
             }
         }
 
-         function secondChart(data) {
-            console.group("Data for chart");
-            console.debug(data.value);
-            console.groupEnd();
+        function secondChart(data) {
             var euroData = []; //array to hold data in euro
             var gbpData = []; //array to hold data in pounds
             var msqData = []; //new empty array to hold second series
@@ -126,9 +181,8 @@
                 var msqItems = [date, parseFloat(msq)]; //create new item containing MSQ vs date
                 msqData.push(msqItems); //add MSQ data items to array
             }
-            console.log(msqData);
 
-            chart1 = new Highcharts.Chart({
+            chart1 = new Highcharts.Chart({ //create new chart
                 chart: {
                     zoomType: 'x',
                     alignTicks: false,
@@ -197,12 +251,12 @@
                 },
                 series: [{
                     type: 'area', //first series - SMP in euro
-                    name: 'SMP - Euro',
+                    name: 'SMP (€)',
                     color: '#20647F',
                     data: euroData // use euro data
                 }, {
                     type: 'area', //second series - SMP in £
-                    name: 'SMP - Pounds',
+                    name: 'SMP (£)',
                     color: '#5A5F7F',
                     data: gbpData // use pounds data
                 }, {
@@ -213,48 +267,115 @@
                     data: msqData //third series uses MSQData
                 }]
             });
-        };      
+        };
     </script>
     <script>
-        function hideData() {
-            document.getElementById("reportData").style.display = "none";
+        function dataShowHide() { //function to show and hide data table
+           
+            if (document.getElementById("reportData").style.display == "none") { //if data table is hidden
+                document.getElementById("reportData").style.display = "block"; //show data table
+                document.getElementById("showBtn").value = "Hide Data"; //change button text
+            }
+            
+            else { //if data table is shown
+                document.getElementById("reportData").style.display = "none"; //hide data table
+                document.getElementById("showBtn").value = "Show Data"; //change button text
+            }
+        }
+       
+        function glossaryShowHide() { //funtion to show and hide glossary
+            
+            if (document.getElementById("glossary").style.display == "none") { //if glossary is hidden
+                document.getElementById("glossary").style.display = "block"; //show glossary 
+                document.getElementById("showInfo").value = "Hide Glossary"; //change button text
+            }
+
+            else { //if glossary is shown
+                document.getElementById("glossary").style.display = "none"; //hide glossary
+                document.getElementById("showInfo").value = "Show Glossary"; //change button text 
+            }
         }
 
-        function showData() {
-            document.getElementById("reportData").style.display = "block";
+        function printReport() {
+            var contents = $("#pageContents").html();
+            var pagePrint = window.open('', '', 'height=800,width=800');
+            pagePrint.document.write('<html>');
+            pagePrint.document.write('<body>');
+            pagePrint.document.write(contents);
+            pagePrint.document.write('</body></html>');
+            pagePrint.document.close();
+            pagePrint.print();
         }
     </script>
+    <noscript>
+        <style type="text/css">
+            #pageContents {
+                display: none;
+            }
+            #wrapper{
+                display: none;
+            }
+        </style>
+    </noscript>
 </head>
 <body style="background: #F2F2F5; ">
-    <form id="printContents" style="padding:50px;">
-        <p class="h">Placeholder Header<br></p>
-        <div id="wrapper" style="padding:50px;">
-            <div id="chartContainer" style="background-color: #F9FAFC;"></div>
+    <div id="wrapper" style="padding: 25px; display: inline; width: 650px;">
+        <hr style="float:left; margin-left:40px;" />
+        <img src="./NUIGlogo.jpg" width="250" height="75" style="float: right; display:inline; margin-top:0px; margin-right:50px; " />
 
-            <div class="inputDiv" style="padding:50px;">
-                <div class="dropdown-content">
-                    <hr />
-                    <p class="small">Date: <input type="text" id="datepick" size="30" /> </p>
-                    <hr />
-                </div>
+        <br />
+        <div class="inputDiv" style="margin-left:265px;">
+            <div class="dropdown-content" style="margin-left: 265px;">
+                <p class="small">Date: <input type="text" id="datepick" size="30" /> </p>
             </div>
-            <br />
-            <input type="button" value="Print Report" id="btnPrint" />
-            <input type="button" value="Show Data" id="showBtn" onclick="showData()"/>
-            <input type="button" value="Hide Data" id="hideBtn" onclick="hideData()"/>
         </div>
+        <input class="control" type="button" value="Print Report" id="btnPrint" onclick="printReport();" style="margin-left:4px;" />
+        <input class="control" type="button" value="Show Data" id="showBtn" onclick="dataShowHide()" />
+        <input class="control" type="button" value="Show Glossary" id="showInfo" onclick="glossaryShowHide()" />
+        <hr style="float:left; margin-bottom:25px; margin-left:40px;" />
+
+    </div>
+    
+    
+    <br />
+
+    <noscript>
+        <br />
+        <br />
+        <img src="./jsError.png"  style="margin-left:450px;"/>  
+        <br />
+        <p class="error" style="margin-left:200px;"> This page requires JavaScript to be enabled. </p>
+        <p class="errorSmall" style="margin-left:250px;"> Please enable JavaScript and refresh the page.</p>
+       
         
-        <table id="reportData" cellpadding="10" cellspacing="5" style="width:75%; display:none; float:right;">
-            <thead style="text-align:left;">
-                <tr>
-                    <th>Delivery Time</th>
-                    <th>Aggregate MSQ</th>
-                    <th>SMP</th>
-                    <th>Currency</th>
-                </tr>
-            </thead>
-            <tbody id="rptBody"></tbody>
-        </table>
-        </form>
+    </noscript>
+    <div id="pageContents" style="padding-left:50px;">
+        <!-- Div wrapper for report printing and error message -->
+        <div id="chartContainer" style="background-color: #F9FAFC;"></div>
+            <div id="glossary" style="background-color: #F2F2F5; display: none; padding-left: 50px; padding-top:50px; ">
+                <br />
+                <br />
+                <dl>
+                    <dt> System Marginal Price (SMP) </dt>
+                    <dd><p class="mid"> The price at which one MWh of electricity is sold under the Code in any given Trading Period.</p></dd>
+
+                    <dt> Market Schedule Quantity (MSQ)</dt>
+                    <dd><p class="mid">The quantity of Output for each Generator Unit in each Trading Period, prior to adjustment for Transmission Losses or Distribution Losses</p></dd>
+
+                    <dt>For more information, please see <a href="http://www.sem-o.com/Dictionary/Pages/A.aspx">here.</a></dt>
+                </dl>
+            </div>
+            <table id="reportData" cellpadding="5" cellspacing="5" style="width: 75%; display: none; margin-top:15px; float: right;">
+                 <thead style="text-align:left;">
+                    <tr>
+                        <th style="background-color: #AEAEB0;">Delivery Time</th>
+                        <th style="background-color: #AEAEB0;">Aggregate MSQ</th>
+                        <th style="background-color: #AEAEB0;">SMP</th>
+                        <th style="background-color: #AEAEB0;">Currency</th>
+                    </tr>
+                </thead>
+                <tbody id="rptBody"></tbody>
+            </table>
+        </div>
 </body>
 </html>

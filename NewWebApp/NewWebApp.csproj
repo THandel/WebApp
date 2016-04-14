@@ -148,13 +148,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app.js" />
     <Content Include="App_Data\XMLDB.mdf" />
     <Content Include="App_Data\XMLDB_log.ldf">
       <DependentUpon>XMLDB.mdf</DependentUpon>
     </Content>
     <Content Include="Global.asax" />
     <Content Include="Index.html" />
+    <Content Include="printSheet.css" />
     <Content Include="Reporting.html" />
     <Content Include="Scripts\highcharts\4.2.0\adapters\standalone-framework.js" />
     <Content Include="Scripts\highcharts\4.2.0\adapters\standalone-framework.src.js" />
@@ -196,10 +196,10 @@
     <Content Include="Scripts\highcharts\4.2.0\themes\grid.js" />
     <Content Include="Scripts\highcharts\4.2.0\themes\sand-signika.js" />
     <Content Include="Scripts\highcharts\4.2.0\themes\skies.js" />
+    <Content Include="ClassDiagram1.cd" />
     <None Include="Scripts\jquery-2.2.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.2.js" />
     <Content Include="Scripts\jquery-2.2.2.min.js" />
-    <Content Include="SQL Queries\XMLtoSqlTable.sql" />
     <Content Include="styleSheet.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -211,7 +211,6 @@
     <Compile Include="Controllers\DeliveryTimesController.cs" />
     <Compile Include="Controllers\LinqDatasController.cs" />
     <Compile Include="Controllers\MarketDatasController.cs" />
-    <Compile Include="Controllers\ReportTypesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -221,8 +220,6 @@
     <Compile Include="Models\DelTimeProvider.cs" />
     <Compile Include="Models\LinqProvider.cs" />
     <Compile Include="Models\MarketData.cs" />
-    <Compile Include="Models\ReportType.cs" />
-    <Compile Include="Models\RepTypeProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -236,7 +233,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="SQL Queries\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

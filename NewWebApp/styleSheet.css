@@ -1,38 +1,23 @@
-﻿body{
-    background-color:#DFE6E8;
+﻿body {
+    background-color: #DFE6E8;
     font-family: "Arial Narrow",Verdana,sans serif;
-    color:#404040;
+    color: #404040;
 }
 
-
-h1 {
-	padding: 45px 0px 0px 0px;
-	font-family: "Arial Narrow",Verdana,sans serif;
-    color:#404040;
-	font-variant: small-caps;
-	font-weight: 200;
-	font-size: 5em;
-}
-h2{
-	font-family: "Arial Narrow",Verdana,sans serif;
-    color:#404040;
-	font-variant: small-caps;
-	font-weight: 100;
-	font-size: 4.5em;
-}
 .inputDiv {
     position: relative;
     display: inline-block;
     font-family: "Arial Narrow",Verdana,sans serif;
-    color:#404040;
-	font-variant: small-caps;
-	font-weight: 100;
-	font-size: 1.2em;
+    color: #404040;
+    font-variant: small-caps;
+    font-weight: 100;
+    font-size: 1.2em;
 }
 
-.inputDiv:before {
-    content: "Select a new date";
-}
+    .inputDiv:before {
+        content: "Select a new date";
+    }
+
 .dropdown-content {
     display: none;
     position: absolute;
@@ -45,92 +30,128 @@ h2{
 .inputDiv:hover .dropdown-content {
     display: block;
 }
+
 .ui-datepicker {
-	width: 216px;
-	height: auto;
-	margin: 5px auto 0;
+    width: 216px;
+    height: auto;
+    margin: 5px auto 0;
     background: url('/body.png');
     opacity: 0.9;
-	font-family: "Arial Narrow",Verdana,sans serif;
-	font-variant: small-caps;
-	font-weight: 100;
+    font-family: "Arial Narrow",Verdana,sans serif;
+    font-variant: small-caps;
+    font-weight: 100;
     font-size: .9em;
-	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
 }
+
 .ui-datepicker-header {
-	background: url('/header.png');
+    background: url('/header.png');
     opacity: 0.9;
-	font-weight: bold;
-	text-shadow: 1px -1px 0px #000;
-	line-height: 30px;
-	border-width: 1px 0 0 0;
-	border-style: solid;
-	border-color: #111;
+    font-weight: bold;
+    text-shadow: 1px -1px 0px #000;
+    line-height: 30px;
+    border-width: 1px 0 0 0;
+    border-style: solid;
+    border-color: #111;
 }
+
 .ui-datepicker table {
-	width: 100%;
+    width: 100%;
 }
+
 .ui-datepicker a {
     font-family: "Arial Narrow",Verdana,sans serif;
-    color:#404040;
-	font-variant: small-caps;
-	font-weight: 100;
+    color: #404040;
+    font-variant: small-caps;
+    font-weight: 100;
     font-size: 1em;
-	text-decoration: dotted;
+    text-decoration: dotted;
 }
+
 .ui-datepicker-title {
     font-family: "Arial Narrow",Verdana,sans serif;
     color: #FBFFFF;
-	font-variant: small-caps;
-	font-weight: 100;
+    font-variant: small-caps;
+    font-weight: 100;
     font-size: 2em;
-	text-align: center;
+    text-align: center;
 }
 
 .ui-datepicker-calendar .ui-state-active {
-	background: #6eafbf;
-	color: #e0e0e0;
-	text-shadow: 0px 1px 0px #4d7a85;
-	filter: dropshadow(color=#4d7a85, offx=0, offy=1);
-	border: 1px solid #55838f;
-	position: relative;
-	margin: 1px;
+    background: #6eafbf;
+    color: #e0e0e0;
+    text-shadow: 0px 1px 0px #4d7a85;
+    filter: dropshadow(color=#4d7a85, offx=0, offy=1);
+    border: 1px solid #55838f;
+    position: relative;
+    z-index: 9999 !important;
+    margin: 1px;
 }
 
-p{
-	font-family: "Arial Narrow",Verdana,sans serif;
-    color:#404040;
-	font-variant: normal;
-	font-weight: 100;
-	font-size: 0.9em;
-}
-p.h{
-	font-family: "Arial Narrow",Verdana,sans serif;
-    color:#404040;
-	font-variant: small-caps;
-	font-weight: 200;
-	font-size: 2em;
-}
-p.mid{
-	font-family: "Arial Narrow",Verdana,sans serif;
-    color:#404040;
-	font-variant: small-caps;
-	font-weight: 600;
-	font-size: 1.1em;
+#wrapper {
+    width: 70%;
+    overflow: hidden;
+    height: 450px;
 }
 
-p.small{
-	font-family: "Arial Narrow",Verdana,sans serif;
-    color:#404040;
-	font-variant: small-caps;
-	font-weight: 200;
-	font-size: 0.9em;
+#chartContainer {
+    width: 70%;
+    float: left;
+    padding: 10px;
+    border: 1px solid black;
+    height: 400px;
 }
 
-hr{
-	display: block;
+div.inputDiv {
+    display: inline-block;
+    padding: 10px 15px 10px 10px;
+    list-style-type: none;
+    text-decoration: none;
+    background-color: #404040;
+    font-family: Tahoma,Verdana,sans serif;
+    color: #ffffff;
+    font-variant: small-caps;
+    font-size: 1em;
+    margin-left: 0px;
+}
+
+p {
+    font-family: "Arial Narrow",Verdana,sans serif;
+    color: #404040;
+    font-variant: normal;
+    font-weight: 100;
+    font-size: 0.9em;
+}
+
+    p.h {
+        font-family: "Arial Narrow",Verdana,sans serif;
+        color: #404040;
+        font-variant: small-caps;
+        font-weight: 200;
+        font-size: 2em;
+    }
+
+    p.error {
+        font-family: "Arial Narrow",Verdana,sans serif;
+        color: #7F1817;
+        font-variant: small-caps;
+        font-weight: 200;
+        font-size: 1.2em;
+    }
+
+
+    p.small {
+        font-family: "Arial Narrow",Verdana,sans serif;
+        color: #404040;
+        font-variant: small-caps;
+        font-weight: 200;
+        font-size: 0.9em;
+    }
+
+hr {
+   
     border-style: inset;
     border-width: 1px;
-	color:  #57A69C;
+    width: 70%;
+    color: #57A69C;
 }
-
