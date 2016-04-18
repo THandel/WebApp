@@ -8,7 +8,7 @@ using System.Web.Security;
 using System.Web.SessionState;
 using System.Web.Http;
 
-namespace NewWebApp
+namespace WebApp
 {
     public class Global : HttpApplication
     {

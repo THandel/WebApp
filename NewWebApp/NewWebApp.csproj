@@ -13,7 +13,7 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NewWebApp</RootNamespace>
+    <RootNamespace>WebApp</RootNamespace>
     <AssemblyName>NewWebApp</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
@@ -154,8 +154,6 @@
     </Content>
     <Content Include="Global.asax" />
     <Content Include="Index.html" />
-    <Content Include="printSheet.css" />
-    <Content Include="Reporting.html" />
     <Content Include="Scripts\highcharts\4.2.0\adapters\standalone-framework.js" />
     <Content Include="Scripts\highcharts\4.2.0\adapters\standalone-framework.src.js" />
     <Content Include="Scripts\highcharts\4.2.0\highcharts-3d.js" />
@@ -196,7 +194,7 @@
     <Content Include="Scripts\highcharts\4.2.0\themes\grid.js" />
     <Content Include="Scripts\highcharts\4.2.0\themes\sand-signika.js" />
     <Content Include="Scripts\highcharts\4.2.0\themes\skies.js" />
-    <Content Include="ClassDiagram1.cd" />
+    <Content Include="ClassDiagram.cd" />
     <None Include="Scripts\jquery-2.2.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.2.js" />
     <Content Include="Scripts\jquery-2.2.2.min.js" />
@@ -268,6 +266,8 @@
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\SSDT\Microsoft.Data.Tools.Schema.Sql.UnitTesting.targets" Condition="'$(VisualStudioVersion)' == ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.Sql.UnitTesting.targets" Condition="'$(VisualStudioVersion)' != ''" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

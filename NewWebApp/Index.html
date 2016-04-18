@@ -79,6 +79,7 @@
             margin-left: 0;
             margin-right: 0;
         }
+
         p.error {
             font-family: "Arial Narrow",Verdana,sans serif;
             color: #7F1817;
@@ -86,6 +87,7 @@
             font-weight: 200;
             font-size: 2.5em;
         }
+
         p.errorSmall {
             font-family: "Arial Narrow",Verdana,sans serif;
             color: #7F1817;
@@ -99,24 +101,22 @@
         var data;
         $(document).ready(function () {
             var chart1;
-          
+
             $('#datepick').datepicker({
                 showAnim: 'slideDown', //set open animation for datepicker
                 dateFormat: "dd/mm/yy", //set date format
                 minDate: new Date(2016, 3 - 1, 24), //constrain selectable dates to those for which there is data
                 maxDate: new Date(2016, 3 - 1, 29),
                 onSelect: function () {
-                    DateInput = $("#datepick").datepicker({ dateFormat: 'dd/MM/yyyy' }).val(); //get selected date 
+                    DateInput = $("#datepick").datepicker({ dateFormat: 'dd/MM/yyyy' }).val(); //get selected date
 
                     var queryStr = "http://lugh4.it.nuigalway.ie/THIndustryProject/odata/LinqDatas?$filter=(deliveryDate eq '" + DateInput + "')";
+
+
                     //create query string
                     $.getJSON(queryStr, function (dataIncoming) { //pass query string to getJSON method
-                        secondChart(dataIncoming); //draw chart
+                        drawChart(dataIncoming); //draw chart
                         drawTbl(dataIncoming); //draw data table
-                        var data = {
-                            csv: dataIncoming.value
-                        };
-                        JSON.data = data;
                     }).fail(function (jqxhr, textStatus, error) {
                         var err = textStatus + ", " + error;
                         console.log("Request Failed: " + err);
@@ -154,24 +154,23 @@
                 }
                 else {
                     td.innerHTML = "£";
-                    //replace P with £ for aesthetic purposes + clarity 
+                    //replace P with £ for aesthetic purposes + clarity
                 }
             }
         }
 
-        function secondChart(data) {
+        function drawChart(data) {
             var euroData = []; //array to hold data in euro
             var gbpData = []; //array to hold data in pounds
-            var msqData = []; //new empty array to hold second series
+            var msqData = []; //array to hold MSQ data
             for (var i = 0, len = data.value.length; i < len; i++) {
                 var dateArray = data.value[i].deliveryDate.substring(0, 10).split('/'); // returns string from index 0 and 10 characters : 25/03/2016 and split where is '/'
-                var currVal = data.value[i].curr; //get the currency flag - returns from Linq as "E"
+                var currVal = data.value[i].curr; //get the currency flag
                 var timeArray = data.value[i].deliveryTime.substring(0, 5).split(':'); //split time into hours and mins
                 var date = Date.UTC(parseInt(dateArray[2]), parseInt(dateArray[1] - 1), parseInt(dateArray[0]), parseInt(timeArray[0]), parseInt(timeArray[1]), 0, 0);
-                var newDate = new Date(date); //get date as type Date
-                var dateTitle = newDate.toLocaleDateString("en-GB"); //format to dd/mm/yyyy to use in title of chart
+                var dateTitle = data.value[i].deliveryDate; //variable for use in title of chart
                 var msq = data.value[i].aggregateMSQ; //new variable for MSQ data
-                var item = [date, parseFloat(data.value[i].smp)];  // create item consisting from Date and SMP. if you check the data sample above, you can see that the smp is "string". it must be casted to float for the chart
+                var item = [date, parseFloat(data.value[i].smp)];  // create item consisting of Date and SMP
                 if (currVal == "E") { //if currency flag is E
                     euroData.push(item); //push the data item to the euro series
                 }
@@ -193,7 +192,7 @@
                 },
                 subtitle: {
                     text: document.ontouchstart === undefined ?
-                            'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                            'Click and drag in the plot area to zoom in or click the legend to hide/show a series.' : 'Pinch the chart to zoom in or tap the legend to hide/show a series'
                 },
                 xAxis: {
                     type: 'datetime',
@@ -271,28 +270,28 @@
     </script>
     <script>
         function dataShowHide() { //function to show and hide data table
-           
+
             if (document.getElementById("reportData").style.display == "none") { //if data table is hidden
                 document.getElementById("reportData").style.display = "block"; //show data table
                 document.getElementById("showBtn").value = "Hide Data"; //change button text
             }
-            
+
             else { //if data table is shown
                 document.getElementById("reportData").style.display = "none"; //hide data table
                 document.getElementById("showBtn").value = "Show Data"; //change button text
             }
         }
-       
+
         function glossaryShowHide() { //funtion to show and hide glossary
-            
+
             if (document.getElementById("glossary").style.display == "none") { //if glossary is hidden
-                document.getElementById("glossary").style.display = "block"; //show glossary 
+                document.getElementById("glossary").style.display = "block"; //show glossary
                 document.getElementById("showInfo").value = "Hide Glossary"; //change button text
             }
 
             else { //if glossary is shown
                 document.getElementById("glossary").style.display = "none"; //hide glossary
-                document.getElementById("showInfo").value = "Show Glossary"; //change button text 
+                document.getElementById("showInfo").value = "Show Glossary"; //change button text
             }
         }
 
@@ -308,11 +307,14 @@
         }
     </script>
     <noscript>
+        <!-- To catch cases where the user doesn't have JavaScript enabled-->
+        <!-- Most of the page will be hidden and an error message displayed-->
         <style type="text/css">
             #pageContents {
                 display: none;
             }
-            #wrapper{
+
+            #wrapper {
                 display: none;
             }
         </style>
@@ -335,47 +337,47 @@
         <hr style="float:left; margin-bottom:25px; margin-left:40px;" />
 
     </div>
-    
-    
+
+
     <br />
 
     <noscript>
+        <!-- If user doesn't have JavaScript enabled, they will be shown an
+             error message informing them to enable JS and refresh the page-->
         <br />
         <br />
-        <img src="./jsError.png"  style="margin-left:450px;"/>  
+        <img src="./jsError.png" style="margin-left:450px;" />
         <br />
         <p class="error" style="margin-left:200px;"> This page requires JavaScript to be enabled. </p>
         <p class="errorSmall" style="margin-left:250px;"> Please enable JavaScript and refresh the page.</p>
-       
-        
     </noscript>
     <div id="pageContents" style="padding-left:50px;">
         <!-- Div wrapper for report printing and error message -->
         <div id="chartContainer" style="background-color: #F9FAFC;"></div>
-            <div id="glossary" style="background-color: #F2F2F5; display: none; padding-left: 50px; padding-top:50px; ">
-                <br />
-                <br />
-                <dl>
-                    <dt> System Marginal Price (SMP) </dt>
-                    <dd><p class="mid"> The price at which one MWh of electricity is sold under the Code in any given Trading Period.</p></dd>
+        <div id="glossary" style="background-color: #F2F2F5; display: none; padding-left: 50px; padding-top:50px; ">
+            <br />
+            <br />
+            <dl>
+                <dt> System Marginal Price (SMP) </dt>
+                <dd><p class="mid"> The price at which one MWh of electricity is sold under the Code in any given Trading Period.</p></dd>
 
-                    <dt> Market Schedule Quantity (MSQ)</dt>
-                    <dd><p class="mid">The quantity of Output for each Generator Unit in each Trading Period, prior to adjustment for Transmission Losses or Distribution Losses</p></dd>
+                <dt> Market Schedule Quantity (MSQ)</dt>
+                <dd><p class="mid">The quantity of Output for each Generator Unit in each Trading Period, prior to adjustment for Transmission Losses or Distribution Losses</p></dd>
 
-                    <dt>For more information, please see <a href="http://www.sem-o.com/Dictionary/Pages/A.aspx">here.</a></dt>
-                </dl>
-            </div>
-            <table id="reportData" cellpadding="5" cellspacing="5" style="width: 75%; display: none; margin-top:15px; float: right;">
-                 <thead style="text-align:left;">
-                    <tr>
-                        <th style="background-color: #AEAEB0;">Delivery Time</th>
-                        <th style="background-color: #AEAEB0;">Aggregate MSQ</th>
-                        <th style="background-color: #AEAEB0;">SMP</th>
-                        <th style="background-color: #AEAEB0;">Currency</th>
-                    </tr>
-                </thead>
-                <tbody id="rptBody"></tbody>
-            </table>
+                <dt>For more information, please see <a href="http://www.sem-o.com/Dictionary/Pages/A.aspx">here.</a></dt>
+            </dl>
         </div>
+        <table id="reportData" cellpadding="5" cellspacing="5" style="width: 75%; display: none; margin-top:15px; float: right;">
+            <thead style="text-align:left;">
+                <tr>
+                    <th style="background-color: #AEAEB0;">Delivery Time</th>
+                    <th style="background-color: #AEAEB0;">Aggregate MSQ</th>
+                    <th style="background-color: #AEAEB0;">SMP</th>
+                    <th style="background-color: #AEAEB0;">Currency</th>
+                </tr>
+            </thead>
+            <tbody id="rptBody"></tbody>
+        </table>
+    </div>
 </body>
 </html>

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using NewWebApp.Models;
-
-namespace NewWebApp.Models
+﻿
+namespace WebApp.Models
 {
     public class DataContainer
     {

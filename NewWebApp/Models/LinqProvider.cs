@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using NewWebApp.Models;
+using WebApp.Models;
 
-namespace NewWebApp.Models
+namespace WebApp.Models
 {
     public class LinqProvider
     {
@@ -13,54 +13,14 @@ namespace NewWebApp.Models
         private string _conString = @"Data Source=lugh4.it.nuigalway.ie;Initial Catalog=msdb2300;Persist Security Info=True;User ID=msdb2300;Password=msdb2300TH";
         private List<DeliveryTime> _delTimeList = new List<DeliveryTime>();
         private List<MarketData> _dataList = new List<MarketData>();
-        private List<combineData> _cDataList = new List<combineData>();
+  
 
         public LinqProvider()
         {
             DelTimeProvider();
             DataProvider();
-            //newCombineData();
         }
 
-        //method to try and combine data from all three tables in one list - not working yet
-        public void newCombineData()
-        {
-            SqlConnection conn = new SqlConnection(_conString);
-            SqlCommand cmd = new SqlCommand("select * from dbo.DeliveryTime; select * from dbo.MarketData; select * from dbo.ReportType", conn);
-            SqlDataReader rdr = null;
-            try
-            {
-                conn.Open();
-                rdr = cmd.ExecuteReader();
-
-                while (rdr.Read())
-                {
-                    combineData c = new combineData();
-                    c.tradeDate = (string)rdr["dbo.MarketData.TRADE_DATE"];
-                    c.deliveryDate = (string)rdr["DELIVERY_DATE"];
-                    c.deliveryTime = (string)rdr["DeliveryTime.Time"];
-                    c.aggregateMSQ = (decimal)rdr["MarketData.AGGREGATED_MSQ"];
-                    c.smp = (decimal)rdr["MarketData.SMP"];
-                    c.curr = (string)rdr["MarketData.CURRENCY_FLAG"];
-                    _cDataList.Add(c);
-                }
-            }
-
-            finally
-            {
-                if (rdr != null)
-                {
-                    rdr.Close();
-                }
-                if (conn != null)
-                {
-                    conn.Close();
-                }
-            }
-        }
-
-       
-         
         public void DelTimeProvider()
         {
             SqlConnection conn = new SqlConnection(_conString);
@@ -95,7 +55,7 @@ namespace NewWebApp.Models
                 }
             }
         }
-
+        
         public void DataProvider()
         {
             SqlConnection conn = new SqlConnection(_conString);

@@ -1,0 +1,5 @@
+C:\Users\User\Documents\GitHub\WebApp\WebApp.Tests\obj\Debug\WebApp.Tests.csprojResolveAssemblyReference.cache
+C:\Users\User\Documents\GitHub\WebApp\WebApp.Tests\bin\Debug\WebApp.Tests.dll
+C:\Users\User\Documents\GitHub\WebApp\WebApp.Tests\bin\Debug\WebApp.Tests.pdb
+C:\Users\User\Documents\GitHub\WebApp\WebApp.Tests\obj\Debug\WebApp.Tests.dll
+C:\Users\User\Documents\GitHub\WebApp\WebApp.Tests\obj\Debug\WebApp.Tests.pdb

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Web.Script.Serialization;
-using NewWebApp.Models;
 
-namespace NewWebApp.Models
+namespace WebApp.Models
 {
     public class DataProvider
     {
@@ -39,7 +35,6 @@ namespace NewWebApp.Models
                     m.currFlag = (string)rdr["CURRENCY_FLAG"];
                     _dataList.Add(m);
                 }
-
             }
 
             finally
@@ -62,10 +57,9 @@ namespace NewWebApp.Models
         
         public IEnumerable<MarketData> getDate(string date)
         {
-            string dateVal = date.ToString();
-            var sorted = _dataList.Where(x => x.delDate == dateVal);
+            var sorted = _dataList.Where(x => x.delDate == date);
             return sorted;
         }
-
     }
  }
+

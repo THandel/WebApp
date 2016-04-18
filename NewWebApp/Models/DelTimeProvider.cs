@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 
-namespace NewWebApp.Models
+namespace WebApp.Models
 {
     public class DelTimeProvider
     {

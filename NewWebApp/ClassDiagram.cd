@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WebApp.Controllers.DeliveryTimesController">
+    <Position X="4.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAQAAAAAgAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Controllers\DeliveryTimesController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebApp.Controllers.LinqDatasController">
+    <Position X="4.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAACAACAAA=</HashCode>
+      <FileName>Controllers\LinqDatasController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebApp.Controllers.MarketDatasController">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIBAAAAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Controllers\MarketDatasController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebApp.Models.combineData">
+    <Position X="0.5" Y="4" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QAAAAAACAAAEAAAAAAAAAQQQBCAAAAAAAgAAgAAAEBA=</HashCode>
+      <FileName>Models\DataContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebApp.Models.DeliveryTime">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAACAAAAAAAAAAAAAAAAAAQAAAAAAKgAAAA=</HashCode>
+      <FileName>Models\DeliveryTime.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebApp.Models.DelTimeProvider">
+    <Position X="2.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAACAA=</HashCode>
+      <FileName>Models\DelTimeProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebApp.Models.LinqProvider">
+    <Position X="2.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAABAAAAAAAAEAAAAgABACAA=</HashCode>
+      <FileName>Models\LinqProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebApp.Models.MarketData">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>IAAAAAAiAAAGAAAIAAAAiQAARAQAAAQAAgQAAIgAEAA=</HashCode>
+      <FileName>Models\MarketData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebApp.Models.DataProvider">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAACAA=</HashCode>
+      <FileName>Models\DataProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

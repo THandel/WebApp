@@ -1,11 +1,11 @@
 ﻿using System.Web.Http.OData.Builder;
 using System.Web.Http.OData.Extensions;
-using NewWebApp.Models;
+using WebApp.Models;
 using System.Web.Http;
 using System.Data.Metadata.Edm;
 
 
-namespace NewWebApp
+namespace WebApp
 {
     public static class WebApiConfig
     {

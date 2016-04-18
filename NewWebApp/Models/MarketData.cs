@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data.Linq.Mapping;
 
-namespace NewWebApp.Models
+namespace WebApp.Models
 {
     [Table(Name = "MarketData")]
     public class MarketData
