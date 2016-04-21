@@ -3,10 +3,10 @@ using System.Net;
 using System.Web.Http;
 using System.Web.Http.OData;
 using System.Web.Http.OData.Query;
-using NewWebApp.Models;
+using WebApp.Models;
 using Microsoft.Data.OData;
 
-namespace NewWebApp.Controllers
+namespace WebApp.Controllers
 {
 
     public class DeliveryTimesController : ODataController

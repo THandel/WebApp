@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using NewWebApp.Models;
-
-namespace NewWebApp.Models
+﻿
+namespace WebApp.Models
 {
     public class DataContainer
     {
@@ -13,10 +8,11 @@ namespace NewWebApp.Models
     public class combineData
     {
         private string _Trade_Date;
-        private DateTime _Delivery_Date;
+        private string _Delivery_Date;
         private string _DeliveryTime;
         private decimal _Aggregate_MSQ;
         private decimal _SMP;
+        private string _curr;
 
         public string tradeDate
         {
@@ -41,7 +37,7 @@ namespace NewWebApp.Models
             }
         }
 
-        public DateTime deliveryDate
+        public string deliveryDate
         {
             get
             {
@@ -75,6 +71,16 @@ namespace NewWebApp.Models
                 this._SMP = value;
             }
         }
-
+        public string curr
+        {
+            get
+            {
+                return this._curr;
+            }
+            set
+            {
+                this._curr = value;
+            }
+        }
     }
 }

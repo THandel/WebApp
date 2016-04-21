@@ -1,6 +1,6 @@
 ﻿using System.Data.Linq.Mapping;
 
-namespace NewWebApp.Models
+namespace WebApp.Models
 {
     [Table(Name = "DeliveryTime")]
     public class DeliveryTime
