@@ -111,9 +111,9 @@
                     DateInput = $("#datepick").datepicker({ dateFormat: 'dd/MM/yyyy' }).val(); //get selected date
 
                     var queryStr = "http://lugh4.it.nuigalway.ie/THIndustryProject/odata/LinqDatas?$filter=(deliveryDate eq '" + DateInput + "')";
-
-
                     //create query string
+
+                    //Adapted from code provided by Peter Vargovcik 
                     $.getJSON(queryStr, function (dataIncoming) { //pass query string to getJSON method
                         drawChart(dataIncoming); //draw chart
                         drawTbl(dataIncoming); //draw data table
@@ -124,6 +124,8 @@
                 }
             });
         });
+
+        //Adapted from code at http://archive.oreilly.com/javascript/jvdhtmlckbk/solution6.html
         function drawTbl(data) {
             var tr, td;
             var tbody = document.getElementById("rptBody"); //get table body from html
@@ -159,6 +161,7 @@
             }
         }
 
+        //Adapted from code provided by Peter Vargovcik 
         function drawChart(data) {
             var euroData = []; //array to hold data in euro
             var gbpData = []; //array to hold data in pounds
@@ -193,6 +196,7 @@
                 subtitle: {
                     text: document.ontouchstart === undefined ?
                             'Click and drag in the plot area to zoom in or click the legend to hide/show a series.' : 'Pinch the chart to zoom in or tap the legend to hide/show a series'
+                            //Inform user that they can zoom in or hide/show the series
                 },
                 xAxis: {
                     type: 'datetime',
@@ -295,6 +299,7 @@
             }
         }
 
+        //Adapted from code at http://stackoverflow.com/questions/21375398/how-to-print-table-using-javascript
         function printReport() {
             var contents = $("#pageContents").html();
             var pagePrint = window.open('', '', 'height=800,width=800');
